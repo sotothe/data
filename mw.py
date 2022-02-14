@@ -12,11 +12,24 @@ class Data:
         cls.objects.append(cls(**kwargs))
         cls.save()
 
-    def update():
-        pass
+    @classmethod
+    def find(cls, **kwargs):
+        for i in cls.objects:
+            if kwargs.items() <= i.__dict__.items():
+                return i
 
-    def delete():
-        pass
+    def update(self, **kwargs):
+        cls = self.__class__
+        data = self.__dict__
+        data.update(kwargs)
+        cls.objects.remove(self)
+        cls.objects.append(cls(**data))
+        cls.save()
+
+    def delete(self):
+        cls = self.__class__
+        cls.objects.remove(self)
+        cls.save()
 
     @classmethod
     def save(cls):
